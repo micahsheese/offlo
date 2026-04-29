@@ -1,0 +1,25 @@
+{
+  "name": "offlo-backend",
+  "version": "0.1.0",
+  "description": "Offlo API server",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "build": "echo 'No build step needed'",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "pg": "^8.10.0",
+    "@prisma/client": "^5.0.0",
+    "axios": "^1.4.0",
+    "stripe": "^12.0.0"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^5.0.0"
+  }
+}
