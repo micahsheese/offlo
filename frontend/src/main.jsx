@@ -6,6 +6,7 @@ import Login from './pages/Login.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import AuthSuccess from './pages/AuthSuccess.jsx'
 import './index.css'
+import './styles/design-system.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

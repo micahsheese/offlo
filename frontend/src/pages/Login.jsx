@@ -1,47 +1,65 @@
 import React from 'react';
+import { Button, Card } from '../components';
 
 export default function Login() {
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
   const loginUrl = `${API_BASE}/auth/login`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center px-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-emerald-900 mb-2">🌿 Offlo</h1>
-          <p className="text-emerald-700">Ethical AI Email</p>
+          <div className="text-5xl mb-4">🌿</div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Offlo</h1>
+          <p className="text-gray-600">Ethical AI for your emails</p>
         </div>
 
-        <div className="space-y-4 mb-8">
-          <p className="text-gray-600 text-center">
-            Draft emails with transparency, human control, and carbon awareness.
-          </p>
-          <ul className="text-sm text-gray-600 space-y-2">
-            <li className="flex items-start">
-              <span className="text-emerald-600 mr-2">✓</span>
-              <span>Transparent AI — recipients know it's AI-drafted</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-emerald-600 mr-2">✓</span>
-              <span>You always approve before sending</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-emerald-600 mr-2">✓</span>
-              <span>Carbon footprint tracked and offset</span>
-            </li>
-          </ul>
-        </div>
+        <Card variant="elevated" className="mb-6">
+          <div className="space-y-4">
+            <p className="text-gray-700 text-center leading-relaxed">
+              Draft emails with confidence. Every AI draft is transparent, human-approved, and carbon-tracked.
+            </p>
+            
+            <div className="space-y-3 pt-2">
+              <div className="flex items-start gap-3">
+                <span className="text-emerald-600 flex-shrink-0 font-bold text-lg">✓</span>
+                <div>
+                  <p className="font-medium text-gray-900 text-sm">Fully Transparent</p>
+                  <p className="text-gray-600 text-xs">Recipients know it's AI-drafted</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-emerald-600 flex-shrink-0 font-bold text-lg">✓</span>
+                <div>
+                  <p className="font-medium text-gray-900 text-sm">Always Under Control</p>
+                  <p className="text-gray-600 text-xs">You approve every email before it sends</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-emerald-600 flex-shrink-0 font-bold text-lg">✓</span>
+                <div>
+                  <p className="font-medium text-gray-900 text-sm">Carbon Aware</p>
+                  <p className="text-gray-600 text-xs">We offset 2x your emissions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
 
-        <a
-          href={loginUrl}
-          className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition duration-200 text-center"
-        >
-          Sign In with Gmail or Outlook
+        <a href={loginUrl} className="block w-full mb-4">
+          <Button variant="primary" size="lg" className="w-full">
+            📧 Sign In with Gmail or Outlook
+          </Button>
         </a>
 
-        <p className="text-xs text-gray-500 text-center mt-4">
-          We'll securely connect to your email. You stay in control.
+        <p className="text-xs text-gray-500 text-center mb-6">
+          14 days free. No card required.
         </p>
+
+        <div className="text-center text-xs text-gray-500 space-y-1">
+          <p>Secure OAuth connection — we never see your password</p>
+          <p>Your emails stay yours. We only help you draft better.</p>
+        </div>
       </div>
     </div>
   );
