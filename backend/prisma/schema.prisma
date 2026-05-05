@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  oauthId   String   @unique
+  provider  String   // "gmail" or "outlook"
+  accessToken String
+  refreshToken String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  drafts Draft[]
+  oauthTokens OAuthToken[]
+}
+
+model OAuthToken {
+  id        String   @id @default(cuid())
+  userId    String
+  provider  String
+  accessToken String
+  refreshToken String?
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Draft {
+  id        String   @id @default(cuid())
+  userId    String
+  to        String
+  subject   String
+  context   String   @db.Text
+  draftText String   @db.Text
+  status    String   // "pending_approval", "sent", "draft"
+  biasScore Float?
+  biasFlags String[] @default([])
+  
+  // Carbon tracking
+  carbonTotal Float?
+  carbonInference Float?
+  carbonTransmission Float?
+  carbonDevice Float?
+  carbonOffset Float?
+  
+  // Email metadata
+  messageId String?
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CarbonStats {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  totalEmissions Float @default(0)
+  totalOffset Float @default(0)
+  emailsSent Int @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
