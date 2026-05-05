@@ -24,16 +24,26 @@ Comprehensive internal testing completed across all core systems. **MVP core is 
 
 ## Bugs Found (Actionable)
 
-### 🔴 BUG #1: File Upload Returns Generic Error Message
+### ✅ BUG #1: File Upload Returns Generic Error Message
 **Severity:** MEDIUM  
 **Component:** Backend API `/api/drafts` (POST)  
 **Priority:** Fix before Week 3  
+**Status:** FIXED (May 5, 2026, commit 9b8b36f)
 
 **Issue:**
 When user uploads file > 10MB limit, API returns:
 ```json
 {
   "error": "Internal server error"
+}
+```
+
+**Fixed Response:**
+```json
+{
+  "error": "File exceeds 10MB limit",
+  "limit_mb": 10,
+  "message": "Please upload a smaller file"
 }
 ```
 
@@ -86,15 +96,24 @@ curl -F "to=test@test.com" -F "subject=Test" \
 
 ---
 
-### 🟡 BUG #2: No Email Format Validation
+### ✅ BUG #2: No Email Format Validation
 **Severity:** LOW-MEDIUM  
 **Component:** Backend API `/api/drafts` (POST)  
 **Priority:** Fix before soft launch  
+**Status:** FIXED (May 5, 2026, commit 9b8b36f)
 
 **Issue:**
 API accepts invalid email addresses:
 - Input: `"to": "not-an-email"`
 - Result: Draft created, but will fail silently at send time
+
+**Fixed Response:**
+```json
+{
+  "error": "Invalid email address",
+  "email": "not-an-email"
+}
+```
 
 Should validate and reject immediately:
 ```json
@@ -398,8 +417,8 @@ app.post('/api/drafts', draftLimiter, async (req, res) => { ... });
 ## Actionable Fixes (By Priority)
 
 ### 🔥 CRITICAL (Do before Week 3)
-- [ ] **BUG #2:** Add email format validation (5 min fix)
-- [ ] **BUG #1:** Improve file upload error messages (10 min fix)
+- [x] **BUG #2:** Add email format validation (DONE - 5 min fix)
+- [x] **BUG #1:** Improve file upload error messages (DONE - 10 min fix)
 
 ### 📌 IMPORTANT (Week 3 roadmap)
 - [ ] Migrate sessions to persistent storage (PostgreSQL)
@@ -459,11 +478,12 @@ curl -X POST http://localhost:3001/test/create-session \
 
 ## Next Steps
 
-1. **This Turn:** Commit testing results & bugs ✅
-2. **Week 3:** Fix BUG #1 & #2, start templates
+1. **This Turn:** ✅ Testing complete, BUG #1 & #2 fixed, BUGS.md created
+2. **Week 3:** Migrate sessions to persistent storage, start templates
 3. **Week 3:** Add audit trail UI & impact dashboard
-4. **Week 4:** Migrate sessions, add rate limiting
-5. **Week 5:** Stripe integration & soft launch
+4. **Week 3:** Fix BUG #3 (sessions), improve bias detection error handling
+5. **Week 4:** Stripe integration, add rate limiting
+6. **Week 5:** Soft launch to waitlist
 
 ---
 
@@ -479,4 +499,16 @@ curl -X POST http://localhost:3001/test/create-session \
 
 **Testing Complete:** May 5, 2026, 00:15 UTC  
 **Report Generated:** May 5, 2026, 00:20 UTC  
+**Fixes Applied:** May 5, 2026, 00:25 UTC  
 **Next Review:** Week 3 (May 10, 2026)
+
+**Summary for Micah:**
+- ✅ MVP core is solid and stable
+- ✅ All critical data flows working (draft → bias check → send)
+- ✅ Carbon tracking & audit logging functional
+- 🔧 2 critical bugs fixed in 20 minutes (email validation + error messages)
+- ⚠️ 1 remaining bug (session persistence) — low priority for MVP
+- 📋 5 warnings documented with specific fixes for Week 3-4
+- 🚀 Ready for Week 3: templates + impact dashboard
+
+Recommendation: Week 3 focus should be on persistent sessions (before public launch) and transparency features (audit trail + impact dashboard).
