@@ -129,6 +129,12 @@ app.post('/api/drafts', upload.array('attachments', 5), async (req, res) => {
       return res.status(400).json({ error: 'Missing to, subject, or context' });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(to)) {
+      return res.status(400).json({ error: 'Invalid email address', email: to });
+    }
+
     const userId = sessions[sessionId].userId;
 
     // Call OpenAI to draft
@@ -486,6 +492,25 @@ Respond in JSON format:
 
 // Error handling
 app.use((err, req, res, next) => {
+  // Handle multer file size errors
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ 
+      error: 'File exceeds 10MB limit',
+      limit_mb: 10,
+      message: 'Please upload a smaller file'
+    });
+  }
+  
+  // Handle other multer errors
+  if (err.code === 'LIMIT_FILE_COUNT') {
+    return res.status(413).json({ 
+      error: 'Too many files',
+      limit: 5,
+      message: 'Maximum 5 files allowed'
+    });
+  }
+  
+  // Log and return generic error
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });
